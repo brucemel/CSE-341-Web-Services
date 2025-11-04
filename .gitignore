@@ -1,1 +1,17 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Environment variables (DO NOT UPLOAD TO GITHUB)
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE files
+.vscode/
+.idea/
