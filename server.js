@@ -1,28 +1,22 @@
 // server.js
-require('dotenv').config(); // ← Agregar esto AL INICIO
+require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
+const { connectDB } = require('./config/database');
 
 const app = express();
-const PORT = process.env.PORT || 3000; // ← Usa variable de entorno
+const PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(express.json());
 
-// Usar variable de entorno para MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => {
-        console.log('✅ MongoDB Atlas conectado exitosamente');
-    })
-    .catch(err => {
-        console.error('❌ Error de conexión:', err.message);
-    });
-
-const db = mongoose.connection;
-db.on('error', (error) => console.error('❌ Error:', error));
-db.once('open', () => console.log('✅ Conectado a la base de datos'));
-
+// Routes
 app.use('/', require('./routes'));
 
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+// Connect to MongoDB and start server
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+  });
+}).catch(err => {
+  console.error('Failed to connect to database:', err);
 });
